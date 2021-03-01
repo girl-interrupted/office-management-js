@@ -6,7 +6,7 @@ describe('meetingRoom', function() {
   let meetingroom;
 
   beforeEach (function() {
-    meetingroom = new meetingRoom();
+    meetingroom = new meetingRoom('Prague');
   });
 
   describe('in order to have a meeting staff can check if the meeting room is available or not', function() {
@@ -22,6 +22,14 @@ describe('meetingRoom', function() {
     it('room becomes unavailable when entered', function() {
       expect(meetingroom.entered()).toEqual('this room is unavailable for the meeting at the moment')
     });
+
+// As a staff member
+// So that I can avoid interrupting a meeting
+// I would like an error if I try to use a room that has already been entered
+    it('a staff member will see an error if trying to use the room when it is not available', function() {
+      meetingroom.entered()
+      expect(function() {meetingroom.entered()}).toThrowError('please book another slot in order to use this room');
+    });
   });
 
 // As a staff member
@@ -30,7 +38,15 @@ describe('meetingRoom', function() {
   describe('meeting room becomes available when the staff member leaves', function() {
     it('room becomes available when vacated', function() {
       expect(meetingroom.available()).toEqual('this room is available for a meeting')
-    })
-  })
+    });
+  });
 
+// As a staff member
+// In order to distinguish between meeting rooms
+// I would like my meeting room to have a name
+  describe('displays the name of the meeting room', function() {
+    it('a staff member can see the name of the meeting room', function() {
+      expect(meetingroom.name).toEqual('Prague')
+    });
+  });
 });
